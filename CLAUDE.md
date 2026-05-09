@@ -10,7 +10,7 @@ Personal website for Michael Gallagher — a one-pager. Rust port of a Flask app
 
 - **Web:** Axum 0.7
 - **Templates:** Askama 0.12 (compile-time-checked Jinja-like)
-- **Styling:** Tailwind 3.4 via the standalone CLI binary (no Node at runtime)
+- **Styling:** Tailwind 3.4 via the standalone CLI binary (no Node at runtime). Custom `accent` and `ink` palettes in `tailwind.config.js` (accent ≈ #67568c, ink = neutrals slightly tinted toward the accent). Body font is Geist Sans, loaded from Google Fonts.
 - **Config:** env vars via `dotenvy` (auto-loads `.env` in dev)
 
 ## Architecture
@@ -20,7 +20,9 @@ Personal website for Michael Gallagher — a one-pager. Rust port of a Flask app
 - `src/error.rs` — `not_found_response()` rendering `404.html`
 - `src/routes/home.rs` — single `/` handler
 
-The home template extends `templates/base.html`. The base sets `class="dark"` on `<html>` via an inline pre-paint script (avoids FOUC); a script at the end of `<body>` wires the toggle button to `localStorage.theme`.
+The home template extends `templates/base.html`. An inline pre-paint script reads `localStorage.theme` if set and otherwise falls back to `prefers-color-scheme`; if dark, it adds `class="dark"` to `<html>` before paint to avoid FOUC. A second script at the end of `<body>` wires the toggle button and persists the choice to `localStorage`.
+
+The base also embeds the orb (`<svg id="orb">`) and loads `static/orb.js` — see the Orb section.
 
 ## Conventions
 
@@ -32,6 +34,19 @@ The home template extends `templates/base.html`. The base sets `class="dark"` on
   ```
   Add `--watch` during template work.
 - **All config is env-vars.** Add to `AppConfig` and `.env.example`.
+
+## Orb
+
+A draggable accent-colored circle that pushes nearby content around. `static/orb.js` animates `<svg id="orb">` (in `templates/base.html`) with a small physics loop: drift, edge-bounce, friction, idle nudges, pointer-drag with `setPointerCapture`.
+
+Two opt-in classes drive what gets pushed:
+
+- `.orb-text` — at startup, text inside is split word-by-word into `<span class="orb-word">`; each word is repulsed individually with center-distance falloff.
+- `.orb-push` — element is pushed as a single block, using closest-point-on-bounds distance so wide elements (h1, buttons) react along their full extent. Currently applied to the h1, GitHub/Resume buttons, theme toggle, footer copyright, and the 404 lines.
+
+Base positions are cached in page coords on load (and on resize), so the per-frame loop does zero DOM reads. Tunables (`PUSH_RADIUS`, `PUSH_FORCE`, `FRICTION`, `BOUNCE`, `IDLE_NUDGE`, `SMOOTH`) sit at the top of `orb.js`. Honors `prefers-reduced-motion` (orb appears, doesn't drift).
+
+The orb is an SVG `<circle>`, not a clipped div — vector rendering avoids the sub-pixel rasterization artifacts that `clip-path: circle()` produces under animated transforms.
 
 ## Local dev
 

@@ -1,4 +1,4 @@
-# personal-website
+# personal-site
 
 My personal website, in Rust. A one-pager.
 
@@ -10,7 +10,7 @@ Stack: [Axum](https://github.com/tokio-rs/axum) + [Askama](https://github.com/dj
 src/         Axum app (routes, config)
 templates/   Askama templates
 assets/css/  Tailwind input
-static/      Build output (tailwind.css) + images / resume.pdf
+static/      Build output (tailwind.css), orb.js (hand-written vanilla JS, not built), resume.pdf
 bin/         Local copy of the standalone tailwindcss binary (gitignored)
 ```
 
