@@ -28,7 +28,7 @@
   }
 
   function placeOrb() {
-    orb.style.transform = 'translate(' + (orbX - radius) + 'px, ' + (orbY - radius) + 'px)';
+    orb.style.transform = 'translate3d(' + (orbX - radius) + 'px, ' + (orbY - radius) + 'px, 0)';
   }
 
   function wrapWords(root) {
