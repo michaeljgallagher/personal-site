@@ -4,3 +4,6 @@
 
 # Personal — never commit
 static/resume.pdf
+DEPLOY.md
+deploy.sh
+*deployment*.json
