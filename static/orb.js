@@ -6,9 +6,9 @@
 
   var PUSH_RADIUS = 150;
   var PUSH_FORCE = 38;
-  var FRICTION = 0.992;
+  var FRICTION = 0.996;
   var BOUNCE = 0.7;
-  var IDLE_NUDGE = 0.35;
+  var IDLE_NUDGE = 0.10;
   var SMOOTH = 0.18;
 
   var radius = 0;
@@ -61,7 +61,7 @@
   function recomputeWords() {
     var sx = window.scrollX || window.pageXOffset || 0;
     var sy = window.scrollY || window.pageYOffset || 0;
-    var els = document.querySelectorAll('.orb-word');
+    var els = document.querySelectorAll('.orb-word, .orb-push');
     wordData = [];
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
@@ -69,8 +69,10 @@
       var r = el.getBoundingClientRect();
       wordData.push({
         el: el,
-        baseX: r.left + sx + r.width / 2,
-        baseY: r.top + sy + r.height / 2,
+        x: r.left + sx,
+        y: r.top + sy,
+        w: r.width,
+        h: r.height,
         cx: 0,
         cy: 0,
       });
@@ -122,7 +124,7 @@
       vx *= FRICTION;
       vy *= FRICTION;
       var speed = Math.sqrt(vx * vx + vy * vy);
-      if (speed < 0.18) {
+      if (speed < 0.08) {
         vx += (Math.random() - 0.5) * IDLE_NUDGE;
         vy += (Math.random() - 0.5) * IDLE_NUDGE;
       }
@@ -137,15 +139,21 @@
 
     for (var i = 0; i < wordData.length; i++) {
       var wd = wordData[i];
-      var dx = wd.baseX - orbPageX;
-      var dy = wd.baseY - orbPageY;
-      var d2 = dx * dx + dy * dy;
+      var clampedX = wd.x < orbPageX ? (wd.x + wd.w < orbPageX ? wd.x + wd.w : orbPageX) : wd.x;
+      var clampedY = wd.y < orbPageY ? (wd.y + wd.h < orbPageY ? wd.y + wd.h : orbPageY) : wd.y;
+      var ddx = clampedX - orbPageX;
+      var ddy = clampedY - orbPageY;
+      var d2 = ddx * ddx + ddy * ddy;
       var tx = 0, ty = 0;
       if (d2 < r2) {
-        var d = Math.sqrt(d2) || 1;
+        var d = Math.sqrt(d2);
         var f = (1 - d / PUSH_RADIUS) * PUSH_FORCE;
-        tx = (dx / d) * f;
-        ty = (dy / d) * f;
+        var cdx = (wd.x + wd.w / 2) - orbPageX;
+        var cdy = (wd.y + wd.h / 2) - orbPageY;
+        var cd = Math.sqrt(cdx * cdx + cdy * cdy);
+        if (cd < 0.5) { cdx = 0; cdy = 1; cd = 1; }
+        tx = (cdx / cd) * f;
+        ty = (cdy / cd) * f;
       }
       wd.cx += (tx - wd.cx) * SMOOTH;
       wd.cy += (ty - wd.cy) * SMOOTH;

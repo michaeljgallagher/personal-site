@@ -12,11 +12,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: clamp(72px, 11vmin, 110px);
-  height: clamp(72px, 11vmin, 110px);
+  width: clamp(60px, 9vmin, 90px);
+  height: clamp(60px, 9vmin, 90px);
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, #a89bc4 0%, #67568c 55%, #564878 100%);
-  box-shadow: 0 0 60px 12px rgba(103, 86, 140, 0.32);
+  background: #67568c;
   cursor: grab;
   z-index: 5;
   touch-action: none;
@@ -30,13 +29,11 @@
   cursor: grabbing;
 }
 
-.orb-word {
-  display: inline-block;
+.orb-word,
+.orb-push {
   will-change: transform;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .orb {
-    box-shadow: 0 0 40px 6px rgba(103, 86, 140, 0.25);
-  }
+.orb-word {
+  display: inline-block;
 }
