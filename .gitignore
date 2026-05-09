@@ -1,3 +1,6 @@
 /target
 /.env
 /bin/tailwindcss
+
+# Personal — never commit
+static/resume.pdf
