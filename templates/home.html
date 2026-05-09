@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="space-y-6">
+  <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Michael Gallagher</h1>
+  <div class="space-y-4 text-lg text-ink-600 dark:text-ink-400">
+    <p>I'm a software engineer with a data focus, based in Boston. I currently work at State Street, designing and optimizing large-scale data pipelines for high-volume trading and analytics workloads.</p>
+    <p>Day-to-day that's mostly Python, SQL, Spark, Databricks, and Airflow — building pipelines, tracking down performance bottlenecks, and making fragile workflows less so. I have a B.S. in Mathematics from UMass Amherst, and I'm picking up Rust and Go on the side.</p>
+    <p>When I'm not coding, you can probably find me <a class="font-medium text-accent-500 underline decoration-accent-500/40 underline-offset-4 transition-colors hover:decoration-accent-500 dark:text-accent-400 dark:decoration-accent-400/40 dark:hover:decoration-accent-400" href="https://www.strava.com/athletes/2796866" target="_blank" rel="noopener">on my bike</a>.</p>
+  </div>
+  <div class="flex flex-wrap gap-3 pt-2">
+    <a href="https://github.com/michaeljgallagher" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-md bg-accent-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-accent-600 dark:bg-accent-400 dark:text-ink-950 dark:hover:bg-accent-300">GitHub</a>
+    <a href="/static/resume.pdf" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-md border border-ink-300 px-4 py-2 text-sm font-medium text-ink-700 transition-colors hover:border-accent-500 hover:text-accent-500 dark:border-ink-700 dark:text-ink-300 dark:hover:border-accent-400 dark:hover:text-accent-400">Resume</a>
+  </div>
+</section>
+{% endblock %}
